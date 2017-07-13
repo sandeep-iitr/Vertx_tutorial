@@ -29,6 +29,7 @@
 
 <p id="lat"></p>
 <p id="lng"></p>
+<p id="count"></p>
 
 <script src="http://cdn.jsdelivr.net/sockjs/0.3.4/sockjs.min.js"></script>
 <script src='vertx-eventbus.js'></script>
@@ -86,7 +87,7 @@ eb.onopen = function() {
     
     document.getElementById("lat").innerHTML = parseFloat(res[0]);
     document.getElementById("lng").innerHTML = parseFloat(res[1]);
-    
+    document.getElementById("count").innerHTML = parseFloat(res[2]);
     
     var pos = {  lat: parseFloat(res[0]),lng: parseFloat(res[1])};
     
