@@ -115,7 +115,7 @@ public class MyFirstVerticle extends AbstractVerticle {
 			    SensorData.lng=obj.getDouble("lng");
 			    
 			     vertx.eventBus().publish("ping-address",i+": "+SensorData.lat+" : "+SensorData.lng);
-				 //System.out.println("sending data:"+i);
+				 System.out.println("sending data:"+i);
 				 i++;
 				 
 			    
