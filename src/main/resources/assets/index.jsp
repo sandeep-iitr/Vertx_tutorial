@@ -13,7 +13,7 @@
 document.getElementById("demo").innerHTML = "My First JavaScript";
 
 
-var eb = new EventBus('http://localhost:8082/eventbus');
+var eb = new EventBus('http://54.183.83.176:8082/eventbus');
 
 eb.onopen = function() {
 
