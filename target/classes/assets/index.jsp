@@ -1,19 +1,73 @@
 <!DOCTYPE html>
 <html>
+ <head>
+    <title>eTrucks</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 100%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+  </head>
+
+
 <body>
 
-<h2>JavaScript in Body</h2>
+<h2> Prototype, version of Real-time location updation</h2>
 
 <p id="demo"></p>
+<p id="data"></p>
+
+<p id="lat"></p>
+<p id="lng"></p>
 
 <script src="http://cdn.jsdelivr.net/sockjs/0.3.4/sockjs.min.js"></script>
 <script src='vertx-eventbus.js'></script>
 
-<script>
-document.getElementById("demo").innerHTML = "My First JavaScript";
+
+
+ <div id="map">
+    <script>
+      
+document.getElementById("demo").innerHTML = "eTrucks, Waiting for Location update";
 
 
 var eb = new EventBus('http://54.183.83.176:8082/eventbus');
+
+//var eb = new EventBus('http://localhost:8082/eventbus');
+
+var map, infoWindow;
+
+function initMap() {
+    map = new google.maps.Map(document.getElementById('map'), {
+      center: {lat: 34.0685561, lng: -118.4433375},
+      zoom: 11
+    });
+    
+    infoWindow = new google.maps.InfoWindow;
+
+    var pos = {
+            lat: 35.068,
+            lng: -118.44
+          };
+    
+    //infoWindow.setPosition(pos);
+   // infoWindow.setContent('Location found.');
+   // infoWindow.open(map);
+    map.setCenter(pos);
+    
+  }
+
+
 
 eb.onopen = function() {
 
@@ -22,30 +76,42 @@ eb.onopen = function() {
   eb.registerHandler('ping-address', function(error, message) {
     console.log('received a message: ' + message.body);
     
+    var str=message.body;
     //String data=message;
-    document.getElementById("demo").innerHTML = message.body;
+    document.getElementById("data").innerHTML = message.body;
     
-  });
-	
-	/*
-  eb.consumer("ping-address", message -> {
+    var res = str.split(":");
+    
+    
+    
+    document.getElementById("lat").innerHTML = parseFloat(res[0]);
+    document.getElementById("lng").innerHTML = parseFloat(res[1]);
+    
+    
+    var pos = {  lat: parseFloat(res[0]),lng: parseFloat(res[1])};
+    
+   
+    
+   map.setCenter(pos);
+    var marker = new google.maps.Marker({
+        position: pos,
+        map: map,
+        title: 'Loc'
+      });
 
-	     // System.out.println("Received message: " + message.body());
-	      // Now send back reply
-	      message.reply("pong!");
-	});
-  */
-	
-  // send a message
-  //eb.send('ping-address', {name: 'tim', age: 587});
-
-}
-
-
-
-//document.getElementById("demo").innerHTML = "My First JavaScript 2";
-
-</script>
+   
+   
+   
+    });
+   }
+    </script>
+    
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCqFLbW3fCwnIcA_1KHKYXtBYYb-_eL3rk&callback=initMap">
+    </script>
+ 
+ 
+</div>
 
 </body>
 </html> 
